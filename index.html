@@ -1,0 +1,690 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Generative AI in Creative Industries: a keynote-style talk of the MGT402 Group 7 report on generative AI, IP and the creative industries.">
+<style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}</style>
+<title>When the Machine Makes Art</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Instrument+Sans:wght@400;500;600;700&family=Martian+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a keynote, not a page. One idea per screen, built beat by beat. Every chapter sits on a dark ground (ink, midnight navy, oxblood, deep indigo, moss, forest) with deep, muted accents (ochre, oxblood, steel blue, rust, sage); a giant accent shape slides to a new spot on every beat, and a colour-inverting cursor rides on top. One committed dark look, independent of light/dark. */
+:root {
+  color-scheme: dark;
+  --ink: #0E0E10;
+  --text: #E3DFD6;
+  --ochre: #B8892E;
+  --oxblood: #8A2A2A;
+  --steel: #34507C;
+  --rust: #9A4E2C;
+  --sage: #3F6B4F;
+  --panel: #1A1A1F;
+
+  --bg: var(--ink); --fg: var(--text); --orb: var(--oxblood); --hlbg: var(--ochre); --hlfg: var(--ink); --mute: rgba(227,223,214,.7); --bar: #4A4742;
+
+  --f-display: "Anton", "Impact", "Arial Narrow Bold", sans-serif;
+  --f-body: "Instrument Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-mono: "Martian Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+body[data-c="0"] { --bg: var(--ink); --orb: var(--oxblood); --hlbg: var(--ochre); --hlfg: var(--ink); --panel: #1A1A1F; }
+body[data-c="1"] { --bg: #121A2C; --orb: var(--steel); --hlbg: var(--ochre); --hlfg: var(--ink); --panel: #1C2539; }
+body[data-c="2"] { --bg: #3A1213; --orb: #6E2222; --hlbg: var(--ink); --hlfg: var(--text); --panel: #4A1B1C; }
+body[data-c="3"] { --bg: var(--ink); --orb: #7A5A1F; --hlbg: var(--ochre); --hlfg: var(--ink); --panel: #1A1A1F; }
+body[data-c="4"] { --bg: #18203F; --orb: #5C4A22; --hlbg: var(--ochre); --hlfg: var(--ink); --panel: #222B4E; }
+body[data-c="5"] { --bg: #1C2216; --orb: #6E3A20; --hlbg: var(--rust); --hlfg: var(--text); --panel: #262D1F; }
+body[data-c="6"] { --bg: #0F2119; --orb: #2F5240; --hlbg: var(--sage); --hlfg: var(--text); --panel: #173025; }
+body[data-c="7"] { --bg: var(--ink); --orb: #5E1E1E; --hlbg: var(--oxblood); --hlfg: var(--text); --panel: #1A1A1F; }
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--fg); font-family: var(--f-body); font-size: 17px; line-height: 1.55; -webkit-font-smoothing: antialiased; overflow: hidden; }
+button { font: inherit; color: inherit; cursor: pointer; }
+:focus-visible { outline: 3px solid var(--fg); outline-offset: 3px; }
+p { margin: 0; }
+.mono { font-family: var(--f-mono); }
+
+/* ---------- layers ---------- */
+.orb { position: fixed; left: 0; top: 0; z-index: 0; background: var(--orb); border-style: solid; border-color: var(--orb); border-width: 0; pointer-events: none; will-change: transform; transition: transform .9s cubic-bezier(.7,0,.2,1), width .9s cubic-bezier(.7,0,.2,1), height .9s cubic-bezier(.7,0,.2,1), border-radius .9s, border-width .9s, background-color .6s, border-color .6s, opacity .6s; }
+.orb.ring { background: transparent; }
+.ghost { position: fixed; right: max(18px, env(safe-area-inset-right, 0px)); bottom: calc(env(safe-area-inset-bottom, 0px) + 64px); z-index: 0; font-family: var(--f-display); font-size: 42vh; line-height: .8; color: transparent; -webkit-text-stroke: 2px var(--fg); opacity: .12; pointer-events: none; user-select: none; }
+.reveal { position: fixed; inset: 0; z-index: 25; pointer-events: none; }
+.cur { position: fixed; left: 0; top: 0; z-index: 60; width: 34px; height: 34px; margin: -17px 0 0 -17px; border-radius: 50%; background: #CFCAC0; mix-blend-mode: difference; pointer-events: none; transition: width .2s, height .2s, margin .2s; }
+.cur.big { width: 74px; height: 74px; margin: -37px 0 0 -37px; }
+@media (pointer: coarse) { .cur { display: none; } }
+@media (prefers-reduced-motion: reduce) { .orb { transition: background-color .3s; } .cur { display: none; } }
+
+/* ---------- chrome ---------- */
+.top { position: fixed; inset: 0 0 auto; z-index: 30; display: flex; align-items: center; gap: 12px; padding-top: calc(env(safe-area-inset-top, 0px) + 12px); padding-bottom: 10px; padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); }
+.who { font-family: var(--f-mono); font-size: 11px; letter-spacing: .04em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex: 1; }
+.tools { display: flex; gap: 6px; align-items: center; }
+.tbtn { border: 2px solid var(--fg); background: var(--bg); border-radius: 999px; padding: 5px 12px; font-family: var(--f-mono); font-size: 11px; min-height: 36px; white-space: nowrap; transition: background .15s, color .15s; }
+.tbtn:hover, .tbtn[aria-pressed="true"] { background: var(--hlbg); color: var(--hlfg); border-color: var(--hlbg); }
+@media (max-width: 520px) { .who { display: none; } .tools { margin-left: auto; } #fsBtn { display: none; } }
+.bot { position: fixed; inset: auto 0 0; z-index: 30; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 12px); padding-top: 8px; padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); }
+.nav { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--fg); background: var(--bg); display: grid; place-items: center; transition: background .15s, color .15s, transform .15s; }
+.nav svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2.6; }
+.nav:hover:not(:disabled) { background: var(--hlbg); color: var(--hlfg); border-color: var(--hlbg); transform: scale(1.06); }
+.nav:disabled { opacity: .3; cursor: default; }
+.dots { display: flex; justify-content: center; gap: 2px; }
+.dots button { width: 30px; height: 30px; border: 0; background: transparent; padding: 0; display: grid; place-items: center; }
+.dots button i { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--fg); transition: all .3s; }
+.dots button[aria-current="step"] i { width: 30px; border-radius: 6px; background: var(--hlbg); border-color: var(--hlbg); }
+.where { font-family: var(--f-mono); font-size: 10.5px; text-align: center; color: var(--mute); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.beatbar { display: flex; justify-content: center; gap: 4px; margin-top: 4px; }
+.beatbar i { width: 16px; height: 3px; border-radius: 2px; background: var(--fg); opacity: .25; transition: opacity .2s; }
+.beatbar i.on { opacity: 1; }
+@media (max-width: 420px) { .dots button { width: 24px; } .dots button[aria-current="step"] i { width: 18px; } }
+
+/* ---------- stage ---------- */
+.stage { position: fixed; inset: 0; z-index: 10; overflow-y: auto; padding-top: calc(env(safe-area-inset-top, 0px) + 72px); padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 112px); padding-left: max(22px, env(safe-area-inset-left, 0px)); padding-right: max(22px, env(safe-area-inset-right, 0px)); display: grid; }
+.slide { align-self: center; width: 100%; max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; padding-left: 2vw; }
+.slide > * { min-width: 0; }
+.k { font-family: var(--f-mono); font-size: clamp(11px, 1.1vw, 13px); letter-spacing: .08em; text-transform: uppercase; display: inline-flex; gap: 10px; align-items: center; }
+.k::before { content: ""; width: 26px; height: 3px; background: var(--fg); }
+.big { margin: 0; font-family: var(--f-display); font-weight: 400; text-transform: uppercase; font-size: clamp(3rem, 9.6vw, 9.4rem); line-height: 1.08; letter-spacing: .005em; max-width: 13ch; text-wrap: balance; }
+.big.m { font-size: clamp(2.4rem, 6.4vw, 6.2rem); max-width: 18ch; }
+.big.xl { font-size: clamp(6rem, 26vw, 22rem); line-height: 1; }
+.big.thanks { font-size: clamp(4.4rem, min(15vw, 24vh), 13rem); line-height: 1.02; max-width: none; }
+.hl { background: var(--hlbg); color: var(--hlfg); padding: 0 .12em; line-height: 1.08; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.sub { font-size: clamp(1.05rem, 1.7vw, 1.4rem); max-width: 46ch; line-height: 1.45; color: var(--fg); }
+.sub.dim { color: var(--mute); font-size: 1rem; }
+.w { display: inline-block; }
+.slam .w { animation: slam .6s cubic-bezier(.2,1.4,.3,1) both; }
+@keyframes slam { from { opacity: 0; transform: translateY(.45em) skewY(6deg) scale(1.15); filter: blur(6px); } }
+.fadeup { animation: fadeup .6s .25s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes fadeup { from { opacity: 0; transform: translateY(18px); } }
+@media (prefers-reduced-motion: reduce) { .slam .w, .fadeup, .chain > *, .bars i, .steps li, .list li { animation: none !important; } }
+@media (max-width: 700px) { .slide { padding-left: 0; } }
+
+/* ---------- widgets ---------- */
+.panel { background: var(--panel); color: var(--fg); border: 2px solid rgba(227,223,214,.18); border-radius: 20px; padding: 18px 20px; }
+.duo, .tri { display: grid; gap: 12px; max-width: 980px; }
+.duo { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.tri { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 760px) { .duo, .tri { grid-template-columns: minmax(0, 1fr); } }
+.duo .panel, .tri .panel { display: grid; gap: 6px; align-content: start; font-size: 15px; }
+.panel h4 { margin: 0; font-family: var(--f-display); font-weight: 400; text-transform: uppercase; font-size: 1.6rem; line-height: 1; }
+.panel .tag { font-family: var(--f-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; }
+.chain { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; max-width: 1080px; }
+@media (max-width: 760px) { .chain { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.chain > div { border: 3px solid var(--fg); border-radius: 18px; padding: 16px; display: grid; gap: 4px; align-content: start; min-height: 120px; animation: pop .5s cubic-bezier(.2,1.4,.3,1) both; }
+.chain > div:nth-child(2) { animation-delay: .25s; } .chain > div:nth-child(3) { animation-delay: .5s; } .chain > div:nth-child(4) { animation-delay: .75s; background: var(--hlbg); color: var(--hlfg); border-color: var(--hlbg); }
+@keyframes pop { from { opacity: 0; transform: scale(.6) rotate(-6deg); } }
+.chain b { font-family: var(--f-display); font-weight: 400; text-transform: uppercase; font-size: clamp(1.4rem, 2.4vw, 2.1rem); line-height: 1; }
+.chain span { font-family: var(--f-mono); font-size: 10.5px; }
+.qmark { font-family: var(--f-display); font-size: clamp(6rem, 20vw, 16rem); line-height: .8; color: var(--hlbg); animation: wob 1.2s ease-in-out infinite; display: inline-block; }
+@keyframes wob { 50% { transform: rotate(-6deg) scale(1.05); } }
+@media (prefers-reduced-motion: reduce) { .qmark { animation: none; } }
+.bars { display: grid; gap: 10px; max-width: 900px; }
+.bars .r { display: grid; grid-template-columns: minmax(120px, 230px) minmax(0, 1fr); gap: 14px; align-items: center; }
+@media (max-width: 560px) { .bars .r { grid-template-columns: minmax(0, 1fr); gap: 2px; } }
+.bars .r span { font-size: 15px; }
+.bars .t { height: 40px; border: 2px solid var(--fg); border-radius: 10px; overflow: hidden; }
+.bars i { display: flex; height: 100%; align-items: center; justify-content: flex-end; padding-right: 10px; background: var(--bar); color: var(--fg); font-family: var(--f-display); font-style: normal; font-size: 1.4rem; width: 0; transition: width 1s cubic-bezier(.2,.8,.2,1); }
+.bars .r:first-child i { background: var(--hlbg); color: var(--hlfg); }
+.axis { display: grid; grid-template-columns: minmax(120px, 230px) minmax(0, 1fr); gap: 14px; font-family: var(--f-mono); font-size: 10.5px; color: var(--mute); max-width: 900px; }
+.axis div { display: flex; justify-content: space-between; }
+@media (max-width: 560px) { .axis { grid-template-columns: minmax(0, 1fr); } .axis > span { display: none; } }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; max-width: 900px; counter-reset: s; }
+.steps li { display: grid; grid-template-columns: 54px minmax(0, 1fr); gap: 16px; align-items: start; animation: fadeup .5s both; }
+.steps li:nth-child(2) { animation-delay: .2s; } .steps li:nth-child(3) { animation-delay: .4s; } .steps li:nth-child(4) { animation-delay: .6s; }
+.steps .n { width: 54px; height: 54px; border-radius: 50%; background: var(--hlbg); color: var(--hlfg); display: grid; place-items: center; font-family: var(--f-display); font-size: 1.6rem; }
+.steps .n.q { background: transparent; border: 3px dashed var(--fg); color: var(--fg); }
+.steps b { font-family: var(--f-display); font-weight: 400; text-transform: uppercase; font-size: clamp(1.3rem, 2.4vw, 2rem); line-height: 1.05; display: block; }
+.steps small { font-family: var(--f-mono); font-size: 10.5px; color: var(--mute); }
+.steps p { font-size: 15px; color: var(--mute); }
+.strike { max-width: 1000px; }
+.strike svg { width: 100%; height: auto; display: block; }
+.s-t { font-family: var(--f-mono); font-size: 11px; fill: var(--text); opacity: .8; }
+.s-l { font-family: var(--f-display); font-size: 18px; text-transform: uppercase; }
+.list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; max-width: 980px; }
+.list li { display: grid; grid-template-columns: 90px minmax(0, 1fr); gap: 16px; align-items: center; border-bottom: 2px solid var(--fg); padding-bottom: 8px; animation: fadeup .45s both; }
+.list li:nth-child(2) { animation-delay: .1s; } .list li:nth-child(3) { animation-delay: .2s; } .list li:nth-child(4) { animation-delay: .3s; } .list li:nth-child(5) { animation-delay: .4s; }
+.list .g { font-family: var(--f-display); font-size: clamp(2.4rem, 4.4vw, 3.6rem); line-height: .9; color: var(--hlbg); }
+.list .d { font-size: clamp(1rem, 1.5vw, 1.2rem); }
+.list .d b { font-family: var(--f-display); font-weight: 400; text-transform: uppercase; font-size: 1.25em; display: block; line-height: 1.05; }
+@media (max-width: 520px) { .list li { grid-template-columns: 62px minmax(0, 1fr); } }
+.sdgcards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr)); gap: 12px; max-width: 1120px; }
+.sdgc { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 14px; align-items: start; background: var(--panel); border: 2px solid rgba(227,223,214,.16); border-radius: 18px; padding: 14px 16px; animation: fadeup .45s both; }
+.sdgc:nth-child(2) { animation-delay: .08s; } .sdgc:nth-child(3) { animation-delay: .16s; } .sdgc:nth-child(4) { animation-delay: .24s; } .sdgc:nth-child(5) { animation-delay: .32s; }
+.sdgc .g { font-family: var(--f-display); font-size: 3.2rem; line-height: .85; color: var(--hlbg); }
+.sdgc b { font-family: var(--f-display); font-weight: 400; text-transform: uppercase; font-size: 1.35rem; line-height: 1.05; display: block; margin-bottom: 6px; }
+.sdgc p { font-size: 13.5px; line-height: 1.45; color: var(--fg); opacity: .9; }
+.sdgc .need { margin-top: 8px; font-family: var(--f-mono); font-size: 11.5px; line-height: 1.5; color: var(--fg); opacity: 1; border-top: 1px solid rgba(227,223,214,.2); padding-top: 8px; }
+@media (prefers-reduced-motion: reduce) { .sdgc { animation: none; } }
+@media (max-width: 520px) { .sdgc { grid-template-columns: 48px minmax(0, 1fr); } .sdgc .g { font-size: 2.5rem; } }
+.hands { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; max-width: 980px; }
+@media (max-width: 640px) { .hands { grid-template-columns: minmax(0, 1fr); } }
+.hand { border: 3px solid var(--fg); border-radius: 24px; padding: 18px; display: grid; gap: 10px; }
+.hand:first-child { border-color: var(--ochre); }
+.hand:last-child { border-color: #A8463C; }
+.hand .lab { font-family: var(--f-display); text-transform: uppercase; font-size: 1.6rem; line-height: 1; }
+.hand .num { font-family: var(--f-display); font-size: clamp(4rem, 9vw, 7rem); line-height: .85; font-variant-numeric: tabular-nums; }
+.hand:first-child .num { color: var(--ochre); }
+.hand:last-child .num { color: #C0574B; }
+.hand .row { display: flex; gap: 8px; }
+.hand .row button { border: 2px solid var(--fg); background: transparent; border-radius: 999px; min-width: 54px; min-height: 48px; font-family: var(--f-display); font-size: 1.3rem; }
+.hand .row button:hover { background: rgba(227,223,214,.14); }
+.split-bar { display: flex; height: 18px; border-radius: 9px; overflow: hidden; max-width: 980px; border: 2px solid var(--fg); }
+.split-bar i { transition: flex-grow .4s; flex-basis: 0; }
+.cta { justify-self: start; border: 0; background: var(--hlbg); color: var(--hlfg); border-radius: 999px; padding: 14px 24px; font-family: var(--f-display); text-transform: uppercase; font-size: 1.3rem; }
+
+
+/* ---------- interactive widgets ---------- */
+.seg { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+.seg button { border: 2px solid var(--fg); background: transparent; border-radius: 999px; padding: 9px 16px; font-family: var(--f-mono); font-size: 12px; min-height: 44px; transition: background .2s, color .2s; }
+.seg button[aria-pressed="true"] { background: var(--hlbg); color: var(--hlfg); border-color: var(--hlbg); }
+.lens { display: grid; gap: 14px; max-width: 900px; }
+.lens-out { background: var(--panel); border: 2px solid rgba(227,223,214,.16); border-radius: 20px; padding: 18px 20px; display: grid; gap: 6px; animation: fadeup .35s both; }
+.lens-out b { font-family: var(--f-display); font-weight: 400; text-transform: uppercase; font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1; }
+.lens-out p { font-size: 16px; max-width: 70ch; }
+.flip { text-align: left; font: inherit; color: var(--fg); cursor: pointer; min-height: 150px; transition: transform .25s, border-color .25s; }
+.flip:hover { transform: translateY(-3px); border-color: var(--hlbg); }
+.flip .q { font-family: var(--f-display); text-transform: uppercase; font-size: 1.5rem; line-height: 1.05; opacity: .55; }
+.flip .a { display: none; font-size: 15px; }
+.flip[aria-expanded="true"] .q { display: none; }
+.flip[aria-expanded="true"] .a { display: grid; gap: 6px; animation: fadeup .35s both; }
+.flip[aria-expanded="true"] { border-color: var(--hlbg); }
+.dz { display: grid; gap: 12px; max-width: 900px; }
+.dz-grid { display: grid; grid-template-columns: repeat(20, 1fr); gap: 5px; max-width: 620px; }
+.dz-grid i { aspect-ratio: 1; border-radius: 50%; border: 1.5px solid rgba(227,223,214,.35); transition: background .3s, border-color .3s; }
+.dz-grid i.on { background: var(--hlbg); border-color: var(--hlbg); }
+.dz-grid i.half { background: repeating-linear-gradient(45deg, var(--hlbg) 0 2px, transparent 2px 4px); border-color: var(--hlbg); }
+.dz-cap { font-size: 16px; max-width: 60ch; }
+.guess { display: grid; gap: 12px; max-width: 760px; }
+.g-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; align-items: center; }
+.g-val { font-family: var(--f-display); font-size: clamp(2.4rem, 5vw, 3.6rem); line-height: 1; color: var(--hlbg); min-width: 3ch; text-align: right; }
+.guess input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 34px; background: transparent; margin: 0; }
+.guess input[type="range"]::-webkit-slider-runnable-track { height: 10px; border-radius: 999px; background: linear-gradient(90deg, var(--hlbg) var(--p, 25%), rgba(227,223,214,.2) var(--p, 25%)); }
+.guess input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 30px; height: 30px; border-radius: 50%; background: var(--text); border: 4px solid var(--hlbg); margin-top: -10px; cursor: grab; }
+.guess input[type="range"]::-moz-range-track { height: 10px; border-radius: 999px; background: rgba(227,223,214,.2); }
+.guess input[type="range"]::-moz-range-progress { height: 10px; border-radius: 999px; background: var(--hlbg); }
+.guess input[type="range"]::-moz-range-thumb { width: 24px; height: 24px; border-radius: 50%; background: var(--text); border: 4px solid var(--hlbg); cursor: grab; }
+.g-track { position: relative; height: 0; margin-right: calc(3ch + 16px); }
+.g-ans { position: absolute; top: -40px; height: 40px; width: 4px; background: var(--text); transform: translateX(-50%); display: none; }
+.g-ans::after { content: "56%"; position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-family: var(--f-mono); font-size: 11px; color: var(--text); }
+.g-out { font-size: 16px; min-height: 1.5em; }
+.cta:disabled { opacity: .45; cursor: default; }
+.moves { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; max-width: 1000px; align-items: start; }
+@media (max-width: 760px) { .moves { grid-template-columns: minmax(0, 1fr); } }
+.mv-btns { display: grid; gap: 8px; }
+.mv-btns button { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 10px; align-items: center; text-align: left; border: 2px solid rgba(227,223,214,.3); background: var(--panel); border-radius: 14px; padding: 10px 14px; font-size: 15px; min-height: 48px; transition: border-color .2s, background .2s; }
+.mv-btns button i { width: 24px; height: 24px; border-radius: 6px; border: 2px solid var(--text); display: grid; place-items: center; font-style: normal; }
+.mv-btns button[aria-pressed="true"] { border-color: var(--hlbg); }
+.mv-btns button[aria-pressed="true"] i { background: var(--hlbg); border-color: var(--hlbg); }
+.mv-btns button[aria-pressed="true"] i::after { content: ""; width: 9px; height: 5px; border-left: 2.5px solid var(--hlfg); border-bottom: 2.5px solid var(--hlfg); transform: rotate(-45deg) translate(1px, -1px); }
+.meters { display: grid; gap: 12px; }
+.meter b { font-family: var(--f-display); font-weight: 400; text-transform: uppercase; font-size: 1.3rem; display: flex; justify-content: space-between; }
+.meter b span { font-family: var(--f-mono); font-size: 11px; }
+.meter .cells { display: flex; gap: 4px; height: 18px; margin-top: 4px; }
+.meter .cells i { flex: 1; border-radius: 4px; background: rgba(227,223,214,.15); transition: background .3s; }
+.meter .cells i.on { background: var(--hlbg); }
+.rules { display: grid; gap: 14px; max-width: 1000px; }
+.rl-btns { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 760px) { .rl-btns { grid-template-columns: minmax(0, 1fr); } }
+.rl-btns button { text-align: left; border: 2px solid rgba(227,223,214,.3); background: var(--panel); border-radius: 18px; padding: 14px 16px; display: grid; gap: 6px; align-content: start; min-height: 120px; transition: border-color .2s; }
+.rl-btns button b { font-family: var(--f-display); font-weight: 400; text-transform: uppercase; font-size: 1.7rem; line-height: 1; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.rl-btns .sw { width: 50px; height: 28px; border-radius: 999px; background: rgba(227,223,214,.2); position: relative; flex: none; transition: background .2s; }
+.rl-btns .sw::after { content: ""; position: absolute; top: 4px; left: 4px; width: 20px; height: 20px; border-radius: 50%; background: var(--text); transition: transform .25s cubic-bezier(.3,1.6,.5,1); }
+.rl-btns button[aria-pressed="true"] { border-color: var(--hlbg); }
+.rl-btns button[aria-pressed="true"] .sw { background: var(--hlbg); }
+.rl-btns button[aria-pressed="true"] .sw::after { transform: translateX(22px); }
+.rl-btns .ev { font-size: 14px; opacity: .55; }
+.rl-btns button[aria-pressed="true"] .ev { opacity: 1; }
+.rl-meter { height: 14px; border-radius: 999px; background: rgba(227,223,214,.15); overflow: hidden; }
+.rl-meter i { display: block; height: 100%; width: 0; background: var(--hlbg); transition: width .5s cubic-bezier(.2,.8,.2,1); }
+.rl-out { font-family: var(--f-display); text-transform: uppercase; font-size: clamp(1.6rem, 3vw, 2.4rem); line-height: 1.05; }
+
+/* ---------- notes + sources ---------- */
+.notes { position: fixed; z-index: 35; left: 0; right: 0; bottom: 0; background: #16161A; color: var(--text); border-top: 3px solid var(--hlbg); padding-top: 16px; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 96px); padding-left: max(22px, env(safe-area-inset-left, 0px)); padding-right: max(22px, env(safe-area-inset-right, 0px)); transform: translateY(105%); transition: transform .35s cubic-bezier(.2,.8,.2,1); max-height: 60vh; overflow-y: auto; }
+.notes.open { transform: none; }
+.notes .tag { font-family: var(--f-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: .08em; opacity: .7; }
+.notes p { max-width: 80ch; font-size: 16px; margin-top: 6px; }
+#notesText { max-width: 90ch; font-size: 16px; margin-top: 6px; line-height: 1.5; }
+.notes .figs-h { display: block; margin-top: 12px; font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--ochre); }
+.notes .figs { margin: 6px 0 0; padding-left: 18px; display: grid; gap: 4px; font-size: 14.5px; }
+.scrim { position: fixed; inset: 0; z-index: 40; background: rgba(14,14,16,.6); }
+.drawer { position: fixed; z-index: 41; top: 0; right: 0; bottom: 0; width: min(480px, 100%); background: #16161A; color: var(--text); border-left: 3px solid var(--ochre); transform: translateX(102%); transition: transform .35s cubic-bezier(.2,.8,.2,1); display: grid; grid-template-rows: auto minmax(0, 1fr); padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); padding-right: env(safe-area-inset-right, 0px); }
+.drawer.open { transform: none; }
+.drawer header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 2px solid rgba(227,223,214,.2); }
+.drawer header b { font-family: var(--f-display); font-weight: 400; text-transform: uppercase; font-size: 1.6rem; }
+.drawer header button { border: 2px solid var(--text); background: transparent; border-radius: 999px; padding: 6px 14px; font-family: var(--f-mono); font-size: 11px; min-height: 38px; color: var(--text); }
+.drawer ol { margin: 0; padding: 10px 20px 24px 40px; overflow-y: auto; display: grid; gap: 12px; align-content: start; }
+.drawer li { font-size: 14px; line-height: 1.5; }
+.drawer a { font-family: var(--f-mono); font-size: 11px; word-break: break-all; color: var(--ochre); }
+.toc { position: fixed; z-index: 41; top: 0; left: 0; bottom: 0; width: min(440px, 100%); background: #16161A; color: var(--text); border-right: 3px solid var(--ochre); transform: translateX(-102%); transition: transform .35s cubic-bezier(.2,.8,.2,1); display: grid; grid-template-rows: auto minmax(0, 1fr); padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); padding-left: env(safe-area-inset-left, 0px); }
+.toc.open { transform: none; }
+.toc header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 2px solid rgba(227,223,214,.2); }
+.toc header b { font-family: var(--f-display); font-weight: 400; text-transform: uppercase; font-size: 1.6rem; }
+.toc header button { border: 2px solid var(--text); background: transparent; border-radius: 999px; padding: 6px 14px; font-family: var(--f-mono); font-size: 11px; min-height: 38px; color: var(--text); }
+#tocList { overflow-y: auto; padding: 8px 12px 28px; }
+.toc-ch { margin-top: 14px; }
+.toc-ch > button { width: 100%; display: flex; align-items: baseline; gap: 10px; background: transparent; border: 0; text-align: left; padding: 6px 8px; font-family: var(--f-display); text-transform: uppercase; font-size: 1.3rem; color: var(--text); border-radius: 8px; }
+.toc-ch > button span { font-family: var(--f-mono); font-size: 11px; color: var(--ochre); }
+.toc-ch ol { list-style: none; margin: 2px 0 0; padding: 0 0 0 10px; border-left: 2px solid rgba(227,223,214,.15); margin-left: 16px; display: grid; }
+.toc-ch li button { width: 100%; display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 8px; text-align: left; background: transparent; border: 0; padding: 7px 8px; font-size: 14.5px; line-height: 1.35; color: rgba(227,223,214,.82); border-radius: 8px; }
+.toc-ch li button i { font-style: normal; font-family: var(--f-mono); font-size: 11px; color: rgba(227,223,214,.5); padding-top: 2px; }
+.toc-ch button:hover { background: rgba(227,223,214,.08); color: var(--text); }
+.toc-ch li button[aria-current="step"] { background: var(--ochre); color: var(--ink); }
+.toc-ch li button[aria-current="step"] i { color: var(--ink); }
+@media (prefers-reduced-motion: reduce) { .notes, .drawer, .toc { transition: none; } }
+</style>
+</head>
+<body>
+
+<div class="orb" id="orb" aria-hidden="true"></div>
+<div class="ghost" id="ghost" aria-hidden="true">00</div>
+<div class="reveal" id="reveal" aria-hidden="true"></div>
+<div class="cur" id="cur" aria-hidden="true"></div>
+
+<header class="top">
+  <div class="who">MGT402 · Group 7 · AI &amp; IP: Is it a ripple effect?</div>
+  <div class="tools">
+    <button class="tbtn" type="button" id="navBtn" aria-expanded="false" title="Jump to any slide (C)">Contents</button>
+    <button class="tbtn" type="button" id="notesBtn" aria-pressed="false" title="Speaker notes (N)">Notes</button>
+    <button class="tbtn" type="button" id="fsBtn" title="Full screen (F)">Full screen</button>
+    <button class="tbtn" type="button" id="srcBtn">Sources</button>
+  </div>
+</header>
+
+<main class="stage" id="stage" aria-live="polite">
+  <div class="slide" id="slide"></div>
+</main>
+
+<nav class="bot" aria-label="Talk navigation">
+  <button class="nav" type="button" id="prev" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <div>
+    <div class="dots" id="dots"></div>
+    <div class="beatbar" id="beatbar" aria-hidden="true"></div>
+    <div class="where" id="where"></div>
+  </div>
+  <button class="nav" type="button" id="next" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+</nav>
+
+<aside class="notes" id="notes" aria-label="Speaker notes"><span class="tag" id="notesTag">Speaker notes</span><div id="notesText"></div></aside>
+<div class="scrim" id="scrim" hidden></div>
+<aside class="toc" id="toc" aria-label="Contents" aria-hidden="true">
+  <header><b>Contents</b><button type="button" id="tocClose">Close</button></header>
+  <nav id="tocList"></nav>
+</aside>
+<aside class="drawer" id="drawer" aria-label="Sources" aria-hidden="true">
+  <header><b>Sources</b><button type="button" id="srcClose">Close</button></header>
+  <ol id="refs"></ol>
+</aside>
+
+<script>
+(function () {
+  const $ = s => document.querySelector(s);
+  const el = (t, a = {}, h) => { const e = document.createElement(t); for (const k in a) e.setAttribute(k, a[k]); if (h != null) e.innerHTML = h; return e; };
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const BG = ["#0E0E10", "#121A2C", "#3A1213", "#0E0E10", "#18203F", "#1C2216", "#0F2119", "#0E0E10"];
+  const store = { get(k, d) { try { const v = localStorage.getItem("mma-" + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem("mma-" + k, JSON.stringify(v)); } catch (e) {} } };
+
+  /* ===== the talk ===== */
+  const CH = [
+    { id: "title", name: "Title", beats: [
+      { orb: "half", h: `<span class="k">MGT402 · Group 7 · AI &amp; IP: Is it a ripple effect?</span><h1 class="big m">Generative AI in <span class="hl">creative industries</span></h1><p class="sub">When the machine makes the art, who gets paid?</p><p class="sub dim">Press → , tap, or swipe to begin</p>`,
+        n: "Introduce the group and the question. Generative AI can produce an image, a song, a voice clip or a script from a short prompt in seconds. We ask whether the ripple from the AI and IP disputes that followed is widening opportunity for creators or deepening inequality." } ] },
+    { id: "stakes", name: "1 · The stakes", beats: [
+      { orb: "tr", h: `<span class="k">World creative exports, 2022</span><h2 class="big m">US$1.4tn <span class="hl">+ US$713bn</span></h2><p class="sub">US$1.4 trillion in creative services exports and a further US$713 billion in creative goods exports, both in 2022 (UNCTAD, Creative Economy Outlook 2024).</p>`,
+        n: "Creative industries such as art, design, music, film, games and publishing run on ideas, and the law protects those ideas through intellectual property. They are also big business: in 2022 world exports of creative services touched US$1.4 trillion, with creative goods adding another US$713 billion." },
+      { orb: "ring", h: `<span class="k">AI music &amp; audiovisual content market</span><h2 class="big">€3bn → <span class="hl">€64bn</span></h2><p class="sub">by 2028, according to CISAC, the global body for authors and composers.</p>`,
+        n: "CISAC expects the market for AI-generated music and audiovisual content to jump from around €3 billion to €64 billion by 2028 (CISAC & PMP Strategy, 2024)." },
+      { orb: "br", h: `<span class="k">If the rules stay as they are</span><h2 class="big m">Creators could lose <span class="hl">a fifth to a quarter</span> of their income</h2><p class="sub">in music and audiovisual, over the period to 2028.</p>`,
+        n: "The same study warns that if the rules stay as they are, creators in these two sectors could lose a fifth to a quarter of their income. Much of the tension is about IP: models trained on existing work without asking or paying, and no clarity on who owns AI output." },
+      { orb: "dot", h: `<span class="k">The ripple</span><div class="chain"><div><span>Stage 1</span><b>GenAI adoption</b></div><div><span>Stage 2</span><b>IP disputes</b></div><div><span>Stage 3</span><b>Business &amp; jobs</b></div><div><span>Reach</span><b>SDG 8 · 9 · 10</b></div></div><p class="sub">Target 8.3 even lists creativity and innovation among what development policy should support.</p>`,
+        n: "Our framework: GenAI adoption leads to IP disputes, which shape business models, contracts and creative jobs, and those changes reach the SDGs, especially decent work (8), innovation (9) and reduced inequalities (10)." },
+      { orb: "half", h: `<h2 class="big m">Widening opportunity? Or <span class="hl">deepening inequality?</span></h2><p class="sub">That is the question this talk answers.</p>`,
+        n: "We work through it with facts, two case studies, business implications and an SDG mapping." } ] },
+    { id: "analysis", name: "2 · Analysis", beats: [
+      { orb: "tr", h: `<span class="k">Who gains, who loses</span><h2 class="big m">It depends <span class="hl">who you measure.</span></h2><div class="widget lens fadeup" id="lens"><div class="seg" role="group" aria-label="Who to measure"><button type="button" data-l="one" aria-pressed="true">Measure one writer</button><button type="button" data-l="all" aria-pressed="false">Measure all writers</button></div><div class="lens-out" aria-live="polite"></div></div><p class="sub dim">Tap to switch who you measure.</p>`,
+        n: "Doshi & Hauser (2024): a controlled experiment. The authors call it a social dilemma. The benefit goes to the individual user, while the costs (sameness, displaced work, uncompensated inputs) spread across the industry." },
+      { orb: "bar", h: `<span class="k">Training data</span><h2 class="big m">Same act. <span class="hl">Different verdict.</span></h2><div class="tri fadeup"><div class="panel"><span class="tag">Germany</span><h4>Infringing</h4>Munich court: the model memorised song lyrics, which counts as reproduction. The text and data mining exception does not cover it, and the developer, not just users, is responsible.</div><div class="panel"><span class="tag">UK</span><h4>Undecided</h4>Getty v Stability AI: the trained model is not an infringing copy, but whether training without consent is lawful was never decided. The appeal has been heard; the decision is awaited.</div><div class="panel"><span class="tag">US</span><h4>Fair use, with limits</h4>Training on books can be fair use, but building a library from pirated books is not. The Copyright Office says some training is fair use and some is not.</div></div><p class="sub">The same act can be lawful in one court and infringing in another. For creators, rights depend on geography.</p>`,
+        n: "In Kadrey v Meta the judge sided with Meta because the authors had not shown market harm, not because training was declared harmless. The US Copyright Office says some training is fair use and some is not. For companies, where a model is trained becomes a strategic choice; for creators, rights depend on geography." },
+      { orb: "sq", h: `<span class="k">Who owns the output</span><h2 class="big m">No human author, <span class="hl">no copyright.</span></h2><p class="sub">In 2026 the US Supreme Court declined to hear Thaler v. Perlmutter. Creators are squeezed at both ends: their work goes in under uncertain rules, and the AI work that competes with them comes out in a legal grey zone.</p>`,
+        n: "A studio relying on fully AI-generated assets may be unable to protect them from copying. Lawyers advise documenting the human contribution. What counts as enough human input is still being tested." },
+      { orb: "pill", h: `<span class="k">Licensing and bargaining power</span><h2 class="big m">Big catalogues negotiate. <span class="hl">Freelancers don't.</span></h2><p class="sub">Universal × Udio and Warner × Suno turned lawsuits into deals. India has proposed a blanket licence with a legal right for creators to be paid.</p>`,
+        n: "After Universal–Udio, users could no longer download their creations, and artist-side voices warned artists could get scraps. Independent musicians, session players, translators and illustrators have little leverage. India's December 2025 proposal: royalties only when an AI system is commercialised, and creators must register works. Critics say collection is impractical and developers may avoid Indian works." },
+      { orb: "ring", h: `<span class="k">Deezer, 2026</span><h2 class="big m"><span class="hl">50%+</span> of uploads. <span class="hl">1–3%</span> of streams.</h2><div class="widget dz fadeup" id="deezer"><div class="seg" role="group" aria-label="What to count"><button type="button" data-d="up" aria-pressed="true">New uploads</button><button type="button" data-d="st" aria-pressed="false">All streams</button><button type="button" data-d="fr" aria-pressed="false">Streams of AI tracks</button></div><div class="dz-grid" aria-hidden="true"></div><p class="dz-cap" aria-live="polite"></p></div>`,
+        n: "Fully AI tracks passed half of new daily uploads for the first time. Much of the surge looks like earning from fake streams on bulk-uploaded tracks. Where this leaves us: no simple 'AI is good' or 'AI is bad'. The outcome depends on the rules: consent, transparency and fair remuneration." } ] },
+    { id: "facts", name: "3 · Facts", beats: [
+      { orb: "dot", h: `<span class="k">Guess first</span><h2 class="big m">How much revenue could <span class="hl">translators</span> lose by 2028?</h2><div class="widget guess fadeup" id="guess"><div class="g-row"><input type="range" id="guessIn" min="0" max="100" value="25" aria-label="Your guess, in percent"><span class="g-val" id="guessVal">25%</span></div><div class="g-track" aria-hidden="true"><span class="g-ans" id="guessAns"></span></div><button type="button" class="cta" id="guessBtn">Lock in the room's guess</button><p class="g-out" id="guessOut" aria-live="polite"></p></div>`,
+        n: "Engage the audience: take two or three guesses before revealing." },
+      { orb: "half", h: `<span class="k">CISAC, 2024</span><h2 class="big xl"><span class="hl">56%</span></h2><p class="sub">Translators and adaptors: the hardest-hit role.</p>`,
+        n: "CISAC's study was the first global study of AI's economic impact on music and audiovisual. Revenue at risk by 2028, compared with a world without generative AI." },
+      { orb: "bar", h: `<span class="k">Revenue at risk by 2028</span><div class="bars" id="bars"></div><div class="axis"><span></span><div><span>0%</span><span>20%</span><span>40%</span><span>60%</span></div></div>`,
+        n: "Translators and adaptors 56%, music creators 24%, audiovisual creators 21%, screenwriters 20%, directors 15%." },
+      { orb: "tr", h: `<span class="k">Where the money moves</span><h2 class="big">€0.3bn → <span class="hl">€9bn</span></h2><p class="sub">GenAI providers' revenue by 2028, while creators' cumulative loss over 2023–2028 is put at €22bn.</p>`,
+        n: "By 2028 AI-generated music is expected to be about 20% of streaming platforms' revenues and about 60% of music libraries' revenues." },
+      { orb: "br", h: `<span class="k">Fully AI tracks delivered to Deezer per day</span><h2 class="big">10,000 → <span class="hl">90,000</span></h2><p class="sub">January 2025 to July 2026.</p>`,
+        n: "The sector at stake: cultural and creative industries generate almost US$2.3 trillion, about 3.1% of world GDP and 6.2% of global employment, roughly 50 million jobs with a young workforce. In June 2026 Deezer became the first platform to tag AI-generated music for listeners." } ] },
+    { id: "cases", name: "4 · Cases", beats: [
+      { orb: "ring", h: `<span class="k">Case 1 · UK, 2025 · training data in visual art</span><h2 class="big m">Getty Images <span class="hl">v Stability AI</span></h2><p class="sub">Getty Images, the photo agency, sued Stability AI in the UK. It alleged that its photographs were copied, without a licence, to train Stable Diffusion, Stability's image generator.</p><div class="duo fadeup"><div class="panel"><span class="tag">The question</span><h4>Can you train on photos without permission?</h4>The case was expected to test whether training an AI model on copyrighted images without consent is lawful.</div><div class="panel"><span class="tag">Where it sits in our framework</span><h4>Stage 2: the IP dispute</h4>Image generators were already widely adopted; this was the dispute over the data behind them.</div></div>`,
+        n: "Case 1 is about training data in visual art. Getty's claim: its photographs were copied to train Stable Diffusion without a licence." },
+      { orb: "bar", h: `<span class="k">What happened</span><ol class="steps"><li><span class="n">1</span><div><small>During the trial</small><b>Training claim dropped</b><p>Getty couldn't show the training took place in the UK, so the court never ruled on the main training question.</p></div></li><li><span class="n">2</span><div><small>4 Nov 2025 · High Court</small><b>The model is not an infringing copy</b><p>Getty argued the trained model was itself an infringing copy (secondary infringement). The court disagreed: the model does not store Getty's images. Getty won only narrowly on trade marks, because Getty watermarks appeared in outputs of earlier model versions.</p></div></li><li><span class="n">3</span><div><small>Dec 2025</small><b>Permission to appeal</b><p>Getty was allowed to challenge the copyright finding at the Court of Appeal.</p></div></li><li><span class="n q">?</span><div><small>Now</small><b>Appeal heard. Decision awaited.</b><p>Until the written decision is published, the UK has no final answer.</p></div></li></ol>`,
+        n: "The High Court judgment covered only two narrower issues: secondary copyright infringement and trade marks." },
+      { orb: "sq", h: `<span class="k">Case 1 · so what?</span><h2 class="big m">The big question <span class="hl">was never answered.</span></h2><div class="tri fadeup"><div class="panel"><span class="tag">What the court decided</span><h4>Only whether a model is a copy</h4>It did not decide whether training on copyrighted images without consent is lawful. Munich's court answered a similar question the other way.</div><div class="panel"><span class="tag">For creators</span><h4>No clear remedy</h4>When training happens abroad, creators have no clear way to challenge it.</div><div class="panel"><span class="tag">For AI firms</span><h4>A win that may not last</h4>The ruling is often read as a win for AI developers, but the appeal is pending.</div></div>`,
+        n: "In our framework, the IP dispute stage is unresolved while adoption continues." },
+      { orb: "tr", h: `<span class="k">Case 2 · Hollywood, 2023 · authorship, likeness and labour</span><h2 class="big m">Two unions. <span class="hl">Two strikes.</span></h2><div class="strike fadeup" id="strike"></div><div class="duo fadeup"><div class="panel"><span class="tag">Writers Guild of America (WGA)</span><h4>Protect the writing</h4>Went on strike on 2 May 2023 to limit studios using generative AI to replace writers' work.</div><div class="panel"><span class="tag">SAG-AFTRA, the performers' union</span><h4>Protect faces and voices</h4>Joined on 14 July 2023 to limit studios reusing performers' faces and voices with AI.</div></div>`,
+        n: "The Writers Guild struck from 2 May to 27 September 2023 (148 days). SAG-AFTRA joined on 14 July and ended on 9 November (118 days). Both wanted limits on studios using AI to replace writers' work or reuse performers' faces and voices." },
+      { orb: "pill", h: `<span class="k">What they won</span><h2 class="big m">No AI scripts. <span class="hl">No replica without consent and pay.</span></h2><div class="duo fadeup"><div class="panel"><span class="tag">WGA agreement · ended 27 Sep 2023</span><h4>Writers</h4>AI cannot write or rewrite literary material. Studios must disclose if material given to a writer was AI-generated. The WGA kept its right to challenge the use of writers' work for AI training.</div><div class="panel"><span class="tag">SAG-AFTRA agreement · ended 9 Nov 2023</span><h4>Performers</h4>Studios need a performer's informed consent before making a digital replica of them, and must pay for its use.</div></div>`,
+        n: "WGA: AI cannot write or rewrite literary material; studios must disclose AI-generated material. SAG-AFTRA: informed consent for a digital replica, and payment for its use." },
+      { orb: "sq", h: `<span class="k">Case 2 · so what?</span><h2 class="big m">The ripple <span class="hl">can be steered.</span></h2><div class="tri fadeup"><div class="panel"><span class="tag">A first</span><h4>The first major AI guardrails</h4>The deals were the first major set of AI guardrails for creative workers.</div><div class="panel"><span class="tag">How they were won</span><h4>Bargaining, not courts</h4>They came from collective bargaining by organised workers, not from judges or new laws.</div><div class="panel"><span class="tag">The limit</span><h4>Members only</h4>Only union members are covered. Freelancers and small creators have no such protection, which links to SDG 8 and SDG 10.</div></div>`,
+        n: "This shows the ripple effect can be steered when workers are organised. The coverage gap is the key limitation: freelancers and small creators remain exposed." } ] },
+    { id: "business", name: "5 · Business", beats: [
+      { orb: "br", h: `<span class="k">For firms</span><h2 class="big m">Four moves to <span class="hl">de-risk AI</span></h2><p class="sub">Legal, reputational and talent risk, managed together.</p>`,
+        n: "Firms capture AI's efficiency gains only if they manage legal, reputational and talent risk together." },
+      { orb: "tr", h: `<span class="k">Move 1 of 4</span><h2 class="big m">Use licensed data. <span class="hl">Keep records.</span></h2><p class="sub">Adobe Firefly and Getty's own tool are built on licensed libraries. The EU AI Act already requires a training-content summary.</p>`,
+        n: "Because the law on training data differs by country, a clean data trail lowers risk everywhere. Universal–Udio and Warner–Suno show labels turning lawsuits into licences." },
+      { orb: "dot", h: `<span class="k">Move 2 of 4</span><h2 class="big m">Keep humans <span class="hl">in the loop.</span></h2><p class="sub">Fully AI-made assets can't be copyrighted in the US. Record briefs, edits and selections.</p>`,
+        n: "Human direction also protects quality: AI-assisted stories were more similar to each other." },
+      { orb: "ring", h: `<span class="k">Move 3 of 4</span><h2 class="big m">Rewrite <span class="hl">contracts.</span></h2><p class="sub">Consent, credit and pay when work, voice or likeness is used, including for freelancers.</p>`,
+        n: "Add AI clauses to talent and freelancer contracts covering consent, compensation, and use for training or replicas. Freelancers have the least bargaining power." },
+      { orb: "sq", h: `<span class="k">Move 4 of 4</span><h2 class="big m">Plan for <span class="hl">every market.</span></h2><p class="sub">Treat the strictest market as the baseline, and be open about AI content.</p>`,
+        n: "The UK, Germany, the US and the EU already differ, and India's proposal is pending. Deezer tags AI music and reports most streams of fully AI tracks are fraudulent." },
+      { orb: "half", h: `<span class="k">Bottom line</span><h2 class="big m">Build IP and talent into your AI strategy, and the ripple <span class="hl">widens opportunity.</span></h2><div class="widget moves fadeup" id="moves"><div class="mv-btns" role="group" aria-label="Moves the firm makes"></div><div class="meters"></div></div>`,
+        n: "Firms that do this are better placed to gain from AI and avoid legal and reputational costs." } ] },
+    { id: "sdgs", name: "6 · SDGs", beats: [
+      { orb: "half", h: `<span class="k">Sustainable Development Goals</span><h2 class="big m">17 global goals. <span class="hl">7 in our report.</span></h2><p class="sub">The SDGs are the United Nations' shared goals for people and the planet. Our report looks at the seven most directly affected by the growing use of generative AI in the creative industries: two about people and work, and five about the planet.</p>`,
+        n: "Set up the SDG section. Since AI became part of everyday life, we tend to forget its environmental side: from our phones to our glasses, these platforms use water and land to answer the questions that reach them every second. The seven goals are SDG 4, 8, 6, 7, 13, 14 and 15." },
+      { orb: "tr", h: `<span class="k">People and work · SDG 4 and SDG 8</span><div class="sdgcards"><div class="sdgc"><span class="g">4</span><div><b>Quality education</b><p>AI can offer a more personalised learning experience, simplify complex ideas and, used properly, make education far more accessible: people can explore digital arts, sciences, writing, design and coding without buying expensive software or enrolling in classes. But AI resources are not evenly distributed, which can widen the digital divide, and heavy reliance on AI-generated material can discourage independent thought, especially for children growing up with AI.</p></div></div><div class="sdgc"><span class="g">8</span><div><b>Decent work and economic growth</b><p>Generative AI is changing how employment works in the creative sector, taking over roles such as graphic design, content writing, illustration, songwriting, video editing and instrumental backgrounds. It raises efficiency, lowers production costs and creates new tech roles, but falling demand for human-made work threatens the incomes and job security of freelancers and employees, and training on copyrighted content raises ethical and legal concerns.</p></div></div></div>`,
+        n: "Walk through both goals: what generative AI offers, and what it puts at risk. SDG 8 carries the report's core concern about creative jobs and incomes." },
+      { orb: "br", h: `<span class="k">Planet · SDG 6, 7, 13, 14 and 15</span><div class="sdgcards"><div class="sdgc"><span class="g">6</span><div><b>Clean water and sanitation</b><p>Generative AI drives demand for data centres, which use large amounts of freshwater to cool their servers; more AI art, video and music means more cooling. Data centres have reportedly caused water shortages in nearby residential areas and compete with agriculture for water.</p><p class="need">Needed: sustainable management of freshwater resources.</p></div></div><div class="sdgc"><span class="g">7</span><div><b>Affordable and clean energy</b><p>Training and running generative AI takes a massive amount of electricity, and image and video generation are especially energy-hungry. This strains the grid, and where electricity comes mainly from fossil fuels, more AI infrastructure can deepen fossil-fuel dependence.</p><p class="need">Needed: cheap, green energy wherever generative AI is deployed.</p></div></div><div class="sdgc"><span class="g">13</span><div><b>Climate action</b><p>Data centres' high electricity demand produces greenhouse-gas emissions when the power comes from fossil fuels, and growing demand for AI images, video and music keeps adding computing load. That conflicts with global efforts to cut carbon emissions.</p><p class="need">Needed: more energy-efficient AI systems and greater use of renewable energy.</p></div></div><div class="sdgc"><span class="g">14</span><div><b>Life below water</b><p>Electronic waste from making components and dismantling decommissioned servers releases toxic chemicals that leach into rivers and, through them, into marine ecosystems. Factories that make AI hardware are also potential sources of water pollution.</p></div></div><div class="sdgc"><span class="g">15</span><div><b>Life on land</b><p>AI hardware needs minerals for semiconductors and processors, and extracting them contributes to deforestation, soil degradation and biodiversity loss. Large data centres also take land and resources, and can leave surrounding land barren.</p><p class="need">Needed: sustainable mining practices and responsible resource management.</p></div></div></div>`,
+        n: "These goals are about AI's physical footprint: water, electricity, emissions, e-waste and mining. For each, name what the report says is needed." },
+      { orb: "half", h: `<h2 class="big m">Every prompt <span class="hl">has a footprint.</span></h2><p class="sub">Water, power, minerals and land, and the livelihoods of the people who make creative work.</p>`,
+        n: "Close the SDG section: the same tools that open up learning and creative production carry real costs for workers and the planet." } ] },
+    { id: "verdict", name: "Verdict", beats: [
+      { orb: "dot", h: `<span class="k">So, is AI good or bad for creators?</span><h2 class="big m">It helps users. <span class="hl">It costs creators.</span></h2><p class="sub">Generative AI makes creative work faster, cheaper and open to more people, so individual users clearly gain. Across the industry, though, creators carry the costs: their work trains models without pay, AI output competes with them, and those with the least bargaining power lose the most income. Whether the ripple widens opportunity or deepens inequality depends on the rules built around the technology.</p>`,
+        n: "The evidence does not support a simple 'AI is good' or 'AI is bad' verdict. It depends on who is measured (the individual user or the creative industry as a whole) and on the rules: consent, transparency and fair remuneration." },
+      { orb: "ring", h: `<span class="k">It depends on the rules</span><h2 class="big m">Switch on <span class="hl">the rules.</span></h2><div class="widget rules fadeup" id="rules"><div class="rl-btns"></div><div class="rl-meter"><i></i></div><p class="rl-out" aria-live="polite"></p></div>`,
+        n: "The outcome depends on the rules built around the technology: consent, transparency and fair remuneration. Switch each on and read out where it is already happening." },
+      { orb: "tr", h: `<span class="k">Your call · count the hands</span><div class="hands" id="hands"></div><div class="split-bar" id="handBar" aria-hidden="true"></div>`,
+        n: "Ask the room: is the ripple widening opportunity or deepening inequality? Count hands and tap + for each. Counts stay in this browser." },
+      { orb: "half", h: `<h2 class="big thanks">Thank <span class="hl">you.</span></h2><p class="sub">MGT402 · Group 7</p><button class="cta" type="button" data-src>See the sources</button>`,
+        n: "Thank the audience. The sources button lists every reference from the report." } ] }
+  ];
+
+
+  /* detailed figures for Q&A, shown in the speaker notes (all from the report unless marked) */
+  const FIG = {
+    "title:0": ["US$1.4tn creative services exports and US$713bn creative goods exports, 2022 (UNCTAD, 2024)", "Creative industries: about US$2.3tn, 3.1% of world GDP, 6.2% of global employment, roughly 50m jobs", "AI music & audiovisual content market: about €3bn → €64bn by 2028; GenAI providers' revenue €0.3bn → €9bn (CISAC & PMP Strategy, 2024)", "Revenue at risk by 2028: music creators 24%, audiovisual 21%, translators & adaptors 56%, screenwriters 20%, directors 15%; cumulative loss 2023–2028 €22bn", "Deezer: ~10,000 fully AI tracks/day (Jan 2025) → ~90,000/day (Jul 2026); over 50% of new daily uploads; 1–3% of streams; up to 70% of fully-AI streams fraudulent", "Strikes: WGA 2 May–27 Sep 2023 (148 days); SAG-AFTRA 14 Jul–9 Nov 2023 (118 days)"],
+    "stakes:0": ["Creative services exports, 2022: US$1.4 trillion", "Creative goods exports, 2022: US$713 billion (both UNCTAD, Creative Economy Outlook 2024; checked against UNCTAD's published figures)", "Cultural and creative industries: almost US$2.3 trillion globally, about 3.1% of world GDP, 6.2% of global employment, roughly 50 million jobs, with a notably young workforce"],
+    "stakes:1": ["CISAC: Confédération Internationale des Sociétés d'Auteurs et Compositeurs; study with PMP Strategy, 2024: first global study of AI's economic impact on music and audiovisual", "AI-generated music & audiovisual content market: about €3bn → €64bn by 2028", "GenAI service providers' revenues: €0.3bn → €9bn by 2028"],
+    "stakes:2": ["Revenue at risk by 2028 vs a world without GenAI: music 24%, audiovisual 21%", "Cumulative loss for music and audiovisual creators, 2023–2028: €22bn", "By 2028 AI music ≈ 20% of streaming platforms' revenues and ≈ 60% of music libraries' revenues"],
+    "stakes:3": ["SDG 8 Target 8.3 lists creativity and innovation among what development policy should support (UN DESA, n.d.)"],
+    "analysis:0": ["Doshi & Hauser (2024), Science Advances 10(28), eadn5290: controlled experiment", "Writers given AI story ideas: stories rated more creative and better written; biggest gains for less creative writers", "AI-assisted stories were more similar to each other than human-only stories"],
+    "analysis:1": ["Germany: GEMA v OpenAI, Munich I Regional Court, Case No. 42 O 14139/24 (WIPO, 2026)", "UK: Getty Images v Stability AI, [2025] EWHC 2863 (Ch), 4 Nov 2025; permission to appeal Dec 2025", "US: June 2025, two federal judges in California found training to be fair use (Anthropic; Kadrey v Meta); pirated shadow-library books not covered", "US Copyright Office report, May 2025"],
+    "analysis:2": ["Thaler v. Perlmutter, 130 F.4th 1039 (D.C. Cir. 2025)", "US Supreme Court declined to hear the case in 2026 (Mayer Brown, 11 Mar 2026)"],
+    "analysis:3": ["Universal settled with Udio and agreed to build a licensed platform; users could no longer download creations", "Warner–Suno licensing deal effectively settled Warner's claims", "India DPIIT working paper, 8 Dec 2025: mandatory blanket licence + statutory remuneration; royalties only on commercialisation; creators must register works"],
+    "analysis:4": ["Fully AI tracks passed 50% of new daily uploads (June 2026 in the report; Deezer Newsroom article dated 21 Jul 2026)", "AI-made music: about 1–3% of total streams, most of those flagged fraudulent", "Recent Deezer estimate: up to 70% of streams of fully AI tracks are fraudulent"],
+    "facts:0": ["Answer: translators and adaptors could lose 56% of revenues by 2028"],
+    "facts:1": ["Translators & adaptors 56%, screenwriters 20%, directors 15%", "Music creators 24%, audiovisual creators 21%"],
+    "facts:2": ["Translators & adaptors 56% · Music creators 24% · Audiovisual creators 21% · Screenwriters 20% · Directors 15%", "Source: CISAC & PMP Strategy (2024), against a world without generative AI"],
+    "facts:3": ["GenAI providers' revenue: €0.3bn → €9bn by 2028", "Creators' cumulative loss 2023–2028: €22bn", "AI music by 2028: ≈20% of streaming revenues, ≈60% of music library revenues"],
+    "facts:4": ["Deezer: ~10,000 fully AI tracks/day (Jan 2025) → nearly 90,000/day (Jul 2026)", "June 2026: Deezer the first streaming platform to tag AI-generated music for listeners", "Sector: US$2.3tn, 3.1% of world GDP, 6.2% of global employment, ~50m jobs"],
+    "cases:1": ["High Court judgment: 4 Nov 2025, [2025] EWHC 2863 (Ch)", "Training claim dropped partly because training could not be shown to have happened in the UK", "Trade-mark win: Getty watermarks in outputs of earlier model versions", "Permission to appeal: Dec 2025; Court of Appeal decision awaited"],
+    "cases:3": ["WGA strike: 2 May – 27 Sep 2023 (148 days)", "SAG-AFTRA strike: 14 Jul – 9 Nov 2023 (118 days)", "Both unions on strike together: 14 Jul – 27 Sep 2023 (75 days)"],
+    "cases:5": ["Protection applies only to union members; the WGA reserved its right to challenge use of writers' work for AI training", "Links to SDG 8 (decent work) and SDG 10 (reduced inequalities)"],
+    "cases:4": ["WGA: AI cannot write or rewrite literary material; disclosure of AI-generated material (WGA, 2023)", "SAG-AFTRA: informed consent for a digital replica, and payment for its use (SAG-AFTRA, 2023)"],
+    "business:1": ["Adobe markets Firefly as trained on licensed Adobe Stock and public-domain content", "Getty built its own generative tool on its licensed library", "EU AI Act training-content summary mandatory from 2025"],
+    "business:2": ["Thaler v. Perlmutter: cert denied 2026 (Assmus & Nolan, 2026)", "Doshi & Hauser (2024): AI-assisted stories more similar to each other"],
+    "business:4": ["Deezer tags AI music (2026) and reports most streams of fully AI tracks are fraudulent (Wendel, 2026)"],
+    "sdgs:0": ["Report's SDG section covers SDG 4, 6, 7, 8, 13, 14 and 15", "The introduction also names SDG 8, 9 and 10 as where the ripple reaches"]
+  };
+  const escN = t => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+  /* ===== state ===== */
+  let c = 0, b = 0;
+  const dots = $("#dots");
+  CH.forEach((ch, i) => { const d = el("button", { type: "button", "aria-label": `Go to ${ch.name}` }, "<i></i>"); d.addEventListener("click", () => jump(i, 0)); dots.appendChild(d); });
+
+  /* orb presets */
+  const ORB = {
+    half: { x: 1.02, y: .5, s: .72 }, tr: { x: .9, y: .1, s: .44 }, br: { x: .95, y: .98, s: .62 },
+    ring: { x: .82, y: .42, s: .42, ring: true }, dot: { x: .86, y: .22, s: .13 },
+    bar: { x: .95, y: .5, w: .12, h: 1.3, r: "0" }, sq: { x: .84, y: .72, s: .3, r: "8%", rot: 18 },
+    pill: { x: .9, y: .58, w: .62, h: .2, r: "999px", rot: -14 }
+  };
+  function placeOrb(key) {
+    const o = ORB[key] || ORB.tr, vw = innerWidth, vh = innerHeight, vmax = Math.max(vw, vh), small = vw < 760;
+    let w = o.w != null ? o.w * vw : o.s * vmax, h = o.h != null ? o.h * vh : o.s * vmax;
+    if (small && o.w == null) { w *= .62; h *= .62; }
+    const orb = $("#orb");
+    orb.style.width = w + "px"; orb.style.height = h + "px";
+    orb.style.borderRadius = o.r || "50%";
+    orb.classList.toggle("ring", !!o.ring);
+    orb.style.borderWidth = o.ring ? Math.max(14, w * .09) + "px" : "0px";
+    orb.style.transform = `translate(${o.x * vw - w / 2}px, ${o.y * vh - h / 2}px) rotate(${o.rot || 0}deg)`;
+    orb.style.opacity = small ? ".4" : "1";
+  }
+
+  /* slam words */
+  function slam(root) {
+    root.querySelectorAll(".big").forEach(h => {
+      const words = [];
+      const walk = n => [...n.childNodes].forEach(ch => {
+        if (ch.nodeType === 3) {
+          const frag = document.createDocumentFragment();
+          ch.textContent.split(/(\s+)/).forEach(part => { if (!part) return; if (/^\s+$/.test(part)) frag.appendChild(document.createTextNode(part)); else { const s = el("span", { class: "w" }); s.textContent = part; frag.appendChild(s); words.push(s); } });
+          ch.replaceWith(frag);
+        } else walk(ch);
+      });
+      walk(h);
+      h.classList.add("slam");
+      words.forEach((w, i) => w.style.animationDelay = (i * .07) + "s");
+    });
+  }
+
+  function render(dir) {
+    const beat = CH[c].beats[b];
+    document.body.dataset.c = c;
+    const s = $("#slide"); s.innerHTML = beat.h;
+    if (!reduce) slam(s);
+    placeOrb(beat.orb);
+    $("#ghost").textContent = String(c).padStart(2, "0");
+    [...dots.children].forEach((d, i) => i === c ? d.setAttribute("aria-current", "step") : d.removeAttribute("aria-current"));
+    $("#beatbar").innerHTML = CH[c].beats.map((_, i) => `<i class="${i <= b ? "on" : ""}"></i>`).join("");
+    $("#where").textContent = `${CH[c].name} · ${b + 1}/${CH[c].beats.length}`;
+    $("#prev").disabled = c === 0 && b === 0;
+    $("#next").disabled = c === CH.length - 1 && b === CH[c].beats.length - 1;
+    $("#notesTag").textContent = `Speaker notes · ${CH[c].name} · ${b + 1}/${CH[c].beats.length}`;
+    const fg = FIG[`${CH[c].id}:${b}`]; $("#notesText").innerHTML = escN(beat.n) + (fg ? `<span class="figs-h">Key figures for questions</span><ul class="figs">${fg.map(x => `<li>${escN(x)}</li>`).join("")}</ul>` : "");
+    $("#stage").scrollTop = 0;
+    widgets(s);
+  }
+
+  function widgets(s) {
+    const bars = s.querySelector("#bars");
+    if (bars) {
+      const R = [["Translators & adaptors", 56], ["Music creators", 24], ["Audiovisual creators", 21], ["Screenwriters", 20], ["Directors", 15]];
+      bars.innerHTML = R.map(([n, v]) => `<div class="r"><span>${n}</span><div class="t"><i data-w="${v / 60 * 100}">${v}%</i></div></div>`).join("");
+      requestAnimationFrame(() => requestAnimationFrame(() => bars.querySelectorAll("i").forEach((i, k) => { i.style.transitionDelay = (k * .12) + "s"; i.style.width = i.dataset.w + "%"; })));
+    }
+    const st = s.querySelector("#strike");
+    if (st) {
+      const d = x => { const [y, m, dd] = x.split("-").map(Number); return Date.UTC(y, m - 1, dd); };
+      const A = d("2023-05-01"), B = d("2023-11-15"), X = x => 10 + (d(x) - A) / (B - A) * 880;
+      let h = "";
+      ["05", "06", "07", "08", "09", "10", "11"].forEach((m, i) => { const xx = X(`2023-${m}-01`); h += `<line x1="${xx}" x2="${xx}" y1="0" y2="116" stroke="#E3DFD6" stroke-opacity=".25"></line><text x="${xx + 4}" y="132" class="s-t">${["MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV"][i]}</text>`; });
+      h += `<rect x="${X("2023-05-02")}" y="8" width="${X("2023-09-27") - X("2023-05-02")}" height="46" rx="10" fill="#B8892E"></rect><text x="${X("2023-05-02") + 14}" y="39" class="s-l" fill="#0E0E10">Writers · WGA · 148 days</text>`;
+      h += `<rect x="${X("2023-07-14")}" y="62" width="${X("2023-11-09") - X("2023-07-14")}" height="46" rx="10" fill="#7E8AA8"></rect><text x="${X("2023-07-14") + 14}" y="93" class="s-l" fill="#0E0E10">Actors · SAG-AFTRA · 118 days</text>`;
+      st.innerHTML = `<svg viewBox="0 0 900 140" role="img" aria-label="WGA strike 2 May to 27 September 2023, 148 days; SAG-AFTRA strike 14 July to 9 November 2023, 118 days">${h}</svg>`;
+    }
+
+    const lens = s.querySelector("#lens");
+    if (lens) {
+      const L = { one: ["One writer wins", "Writers given AI story ideas produced stories readers rated more creative and better written. The biggest gain went to writers who were less creative to begin with."], all: ["The wider pool loses", "The AI-assisted stories were more similar to each other. What helps each writer can hurt the pool: sameness, displaced work and unpaid inputs spread across the industry. The authors call it a social dilemma."] };
+      const out = lens.querySelector(".lens-out");
+      const show = k => { lens.querySelectorAll("[data-l]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.l === k))); out.style.animation = "none"; void out.offsetWidth; out.style.animation = ""; out.innerHTML = `<b>${L[k][0]}</b><p>${L[k][1]}</p>`; };
+      lens.addEventListener("click", e => { const t = e.target.closest("[data-l]"); if (t) show(t.dataset.l); });
+      show("one");
+    }
+    const ver = s.querySelector("#verdicts");
+    if (ver) ver.addEventListener("click", e => { const t = e.target.closest(".flip"); if (t) t.setAttribute("aria-expanded", String(t.getAttribute("aria-expanded") !== "true")); });
+    const dz = s.querySelector("#deezer");
+    if (dz) {
+      const D = { up: [51, 0, "More than half of new daily uploads to Deezer were fully AI-generated (June 2026)."], st: [1, 2, "Yet AI-made music drew only about 1–3% of all streams. Volume is not audience demand."], fr: [70, 0, "And up to 70% of streams of fully AI tracks are fraudulent, which shrinks artists' share of income."] };
+      const grid = dz.querySelector(".dz-grid"); grid.innerHTML = "<i></i>".repeat(100);
+      const show = k => { dz.querySelectorAll("[data-d]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.d === k))); const [on, half, cap] = D[k]; [...grid.children].forEach((d, i) => { d.className = i < on ? "on" : i < on + half ? "half" : ""; d.style.transitionDelay = (reduce ? 0 : i * 6) + "ms"; }); dz.querySelector(".dz-cap").textContent = cap + " Each dot is 1 in 100."; };
+      dz.addEventListener("click", e => { const t = e.target.closest("[data-d]"); if (t) show(t.dataset.d); });
+      show("up");
+    }
+    const gs = s.querySelector("#guess");
+    if (gs) {
+      const r = gs.querySelector("#guessIn"), v = gs.querySelector("#guessVal"), btn = gs.querySelector("#guessBtn");
+      const upd = () => { r.style.setProperty("--p", r.value + "%"); v.textContent = r.value + "%"; };
+      r.addEventListener("input", upd); upd();
+      btn.addEventListener("click", () => {
+        const off = Math.abs(+r.value - 56), ans = gs.querySelector("#guessAns");
+        ans.style.left = `calc(${56}% + ${(50 - 56) * .3}px)`; ans.style.display = "block";
+        r.disabled = true; btn.disabled = true;
+        gs.querySelector("#guessOut").textContent = off <= 5 ? `Spot on. The answer is 56%. Press → to see it.` : `The room was ${off} points ${+r.value > 56 ? "too high" : "too low"}. Press → for the answer.`;
+      });
+    }
+    const mv = s.querySelector("#moves");
+    if (mv) {
+      const M = ["Use licensed data, keep records", "Keep humans in the loop", "Rewrite contracts", "Plan for every market"];
+      const R = [["Legal risk", [0, 1, 3]], ["Reputational risk", [3]], ["Talent risk", [2]]];
+      const on = [false, false, false, false];
+      const paint = () => {
+        mv.querySelector(".mv-btns").innerHTML = M.map((m, i) => `<button type="button" data-m="${i}" aria-pressed="${on[i]}"><i></i><span>${i + 1}. ${m}</span></button>`).join("");
+        mv.querySelector(".meters").innerHTML = R.map(([n, idx]) => { const got = idx.filter(i => on[i]).length; return `<div class="meter"><b>${n}<span>${got === idx.length ? "covered" : `${got} of ${idx.length} moves`}</span></b><div class="cells">${idx.map(i => `<i class="${on[i] ? "on" : ""}"></i>`).join("")}</div></div>`; }).join("");
+      };
+      mv.addEventListener("click", e => { const t = e.target.closest("[data-m]"); if (t) { on[+t.dataset.m] = !on[+t.dataset.m]; paint(); } });
+      paint();
+    }
+    const rl = s.querySelector("#rules");
+    if (rl) {
+      const RL = [["Consent", "SAG-AFTRA: informed consent before a performer's digital replica is made."], ["Transparency", "EU AI Act training-content summaries; WGA disclosure of AI material; Deezer tagging AI music."], ["Fair pay", "SAG-AFTRA pay for replica use; India's proposed statutory right to be paid; label licensing deals."]];
+      const OUT = ["Without rules, the ripple deepens inequality.", "One rule on: still leaning unequal.", "Two rules on: getting fairer.", "All three on: the ripple widens opportunity."];
+      const on = [false, false, false];
+      const paint = () => {
+        rl.querySelector(".rl-btns").innerHTML = RL.map((x, i) => `<button type="button" data-r="${i}" aria-pressed="${on[i]}"><b>${x[0]}<span class="sw" aria-hidden="true"></span></b><span class="ev">Already happening: ${x[1]}</span></button>`).join("");
+        const n = on.filter(Boolean).length;
+        rl.querySelector(".rl-meter i").style.width = (n / 3 * 100) + "%";
+        rl.querySelector(".rl-out").textContent = OUT[n];
+      };
+      rl.addEventListener("click", e => { const t = e.target.closest("[data-r]"); if (t) { on[+t.dataset.r] = !on[+t.dataset.r]; paint(); } });
+      paint();
+    }
+    const hands = s.querySelector("#hands");
+    if (hands) {
+      let v = store.get("hands", { o: 0, i: 0 });
+      const paint = () => {
+        hands.innerHTML = [["o", "Widening opportunity"], ["i", "Deepening inequality"]].map(([k, lab]) => `<div class="hand"><span class="lab">${lab}</span><span class="num" aria-live="polite">${v[k]}</span><div class="row"><button type="button" data-k="${k}" data-d="1" aria-label="Add a hand for ${lab}">+1</button><button type="button" data-k="${k}" data-d="-1" aria-label="Remove a hand for ${lab}">−1</button><button type="button" data-k="${k}" data-d="0" aria-label="Reset ${lab}">0</button></div></div>`).join("");
+        const t = v.o + v.i;
+        $("#handBar").innerHTML = t ? `<i style="background:#B8892E;flex-grow:${v.o}"></i><i style="background:#A8463C;flex-grow:${v.i}"></i>` : `<i style="flex-grow:1;background:transparent"></i>`;
+      };
+      hands.addEventListener("click", e => { const btn = e.target.closest("button"); if (!btn) return; const k = btn.dataset.k, dd = +btn.dataset.d; v[k] = dd === 0 ? 0 : Math.max(0, v[k] + dd); store.set("hands", v); paint(); });
+      paint();
+    }
+    s.querySelectorAll("[data-src]").forEach(x => x.addEventListener("click", openSrc));
+  }
+
+  /* ===== navigation ===== */
+  function circleReveal(next, ox, oy, done) {
+    if (reduce) { done(); return; }
+    const r = $("#reveal"), x = ox ?? innerWidth / 2, y = oy ?? innerHeight / 2;
+    r.style.background = BG[next];
+    r.style.clipPath = `circle(0px at ${x}px ${y}px)`;
+    r.style.transition = "none"; void r.offsetWidth;
+    r.style.transition = "clip-path .55s cubic-bezier(.7,0,.25,1)";
+    r.style.clipPath = `circle(${Math.hypot(innerWidth, innerHeight)}px at ${x}px ${y}px)`;
+    setTimeout(() => { done(); r.style.transition = "opacity .25s"; r.style.opacity = "0"; setTimeout(() => { r.style.transition = "none"; r.style.clipPath = "circle(0px at 0 0)"; r.style.opacity = "1"; }, 260); }, 540);
+  }
+  let lastX = null, lastY = null, busy = false;
+  function jump(nc, nb, fromHash) {
+    if (busy) return;
+    nc = Math.max(0, Math.min(CH.length - 1, nc)); nb = Math.max(0, Math.min(CH[nc].beats.length - 1, nb));
+    if (nc === c && nb === b && !fromHash) return;
+    const chapterChange = nc !== c;
+    const go = () => { c = nc; b = nb; render(); if (!fromHash) { try { history.replaceState(null, "", "#" + CH[c].id); } catch (e) {} } };
+    if (chapterChange) { busy = true; circleReveal(nc, lastX, lastY, () => { go(); busy = false; }); } else go();
+  }
+  function next() { if (b < CH[c].beats.length - 1) jump(c, b + 1); else if (c < CH.length - 1) jump(c + 1, 0); }
+  function prev() { if (b > 0) jump(c, b - 1); else if (c > 0) jump(c - 1, CH[c - 1].beats.length - 1); }
+  $("#next").addEventListener("click", e => { lastX = e.clientX || null; lastY = e.clientY || null; next(); });
+  $("#prev").addEventListener("click", e => { lastX = e.clientX || null; lastY = e.clientY || null; prev(); });
+  $("#stage").addEventListener("click", e => {
+    if (e.target.closest("button, a, input, .hands, .panel, .widget")) return;
+    if (String(getSelection && getSelection()).length) return;
+    lastX = e.clientX; lastY = e.clientY; next();
+  });
+  addEventListener("keydown", e => {
+    if ($("#drawer").classList.contains("open")) { if (e.key === "Escape") closeSrc(); return; }
+    if ($("#toc").classList.contains("open")) { if (e.key === "Escape" || e.key === "c" || e.key === "C") closeToc(); return; }
+    if (e.key === "c" || e.key === "C") { openToc(); return; }
+    const t = e.target, onBtn = t && (t.tagName === "BUTTON" || t.tagName === "INPUT");
+    if (t && t.type === "range" && e.key.startsWith("Arrow")) return;
+    if (["ArrowRight", "PageDown"].includes(e.key) || (!onBtn && (e.key === " " || e.key === "Enter"))) { e.preventDefault(); lastX = lastY = null; next(); }
+    else if (["ArrowLeft", "PageUp"].includes(e.key) || (!onBtn && e.key === "Backspace")) { e.preventDefault(); lastX = lastY = null; prev(); }
+    else if (e.key === "Home") jump(0, 0);
+    else if (e.key === "End") jump(CH.length - 1, CH[CH.length - 1].beats.length - 1);
+    else if (e.key === "n" || e.key === "N") toggleNotes();
+    else if (e.key === "f" || e.key === "F") fullscreen();
+  });
+  let tx = null, ty = 0;
+  addEventListener("touchstart", e => { if (e.target.closest(".drawer, .notes, .hands, .widget")) { tx = null; return; } tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+  addEventListener("touchend", e => { if (tx == null) return; const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty; if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) { lastX = lastY = null; dx < 0 ? next() : prev(); } tx = null; }, { passive: true });
+  addEventListener("hashchange", () => { const k = CH.findIndex(x => x.id === location.hash.slice(1)); if (k >= 0 && k !== c) jump(k, 0, true); });
+  addEventListener("resize", () => placeOrb(CH[c].beats[b].orb));
+
+  /* ===== tools ===== */
+  function toggleNotes() { const n = $("#notes"), o = !n.classList.contains("open"); n.classList.toggle("open", o); $("#notesBtn").setAttribute("aria-pressed", String(o)); }
+  $("#notesBtn").addEventListener("click", toggleNotes);
+  function fullscreen() { const d = document; try { if (d.fullscreenElement) d.exitFullscreen().catch(() => {}); else if (d.documentElement.requestFullscreen) d.documentElement.requestFullscreen().catch(() => {}); } catch (e) {} }
+  if (!document.documentElement.requestFullscreen) $("#fsBtn").hidden = true;
+  $("#fsBtn").addEventListener("click", fullscreen);
+
+  /* cursor */
+  const cur = $("#cur");
+  if (matchMedia("(pointer: fine)").matches && !reduce) {
+    addEventListener("pointermove", e => { cur.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`; cur.classList.toggle("big", !!e.target.closest("button, a")); });
+  } else cur.hidden = true;
+
+  /* contents panel */
+  const labelOf = beat => { const d = document.createElement("div"); d.innerHTML = beat.h; const h = d.querySelector("h1, h2"), k = d.querySelector(".k"); const t = (h ? h.textContent : (k ? k.textContent : "")).replace(/\s+/g, " ").trim(); return k && h && t.length < 4 ? `${t}: ${k.textContent}` : t || (k ? k.textContent : "Slide"); };
+  function buildToc() {
+    $("#tocList").innerHTML = CH.map((ch, ci) => `<div class="toc-ch"><button type="button" data-c="${ci}" data-b="0"><span>${String(ci).padStart(2, "0")}</span>${ch.name.replace(/^\d+ · /, "")}</button><ol>${ch.beats.map((bt, bi) => `<li><button type="button" data-c="${ci}" data-b="${bi}" ${ci === c && bi === b ? 'aria-current="step"' : ""}><i>${bi + 1}/${ch.beats.length}</i><span>${escN(labelOf(bt))}</span></button></li>`).join("")}</ol></div>`).join("");
+  }
+  let tocFocus = null;
+  function openToc() { tocFocus = document.activeElement; buildToc(); $("#toc").classList.add("open"); $("#toc").setAttribute("aria-hidden", "false"); $("#navBtn").setAttribute("aria-expanded", "true"); $("#scrim").hidden = false; const cur = $("#tocList [aria-current]"); (cur || $("#tocClose")).focus(); if (cur) cur.scrollIntoView({ block: "center" }); }
+  function closeToc() { $("#toc").classList.remove("open"); $("#toc").setAttribute("aria-hidden", "true"); $("#navBtn").setAttribute("aria-expanded", "false"); $("#scrim").hidden = true; if (tocFocus) tocFocus.focus(); }
+  $("#navBtn").addEventListener("click", openToc);
+  $("#tocClose").addEventListener("click", closeToc);
+  $("#tocList").addEventListener("click", e => { const t = e.target.closest("[data-c]"); if (!t) return; closeToc(); lastX = lastY = null; jump(+t.dataset.c, +t.dataset.b); });
+  $("#scrim").addEventListener("click", () => { if ($("#toc").classList.contains("open")) closeToc(); });
+
+  /* sources */
+  const REFS = [
+    ["Assmus, R. M., & Nolan, B. W. (2026, March 11). Supreme Court denies cert in AI authorship case – Updated with comments from Dr. Thaler. Mayer Brown.", "https://www.mayerbrown.com/en/insights/publications/2026/03/supreme-court-denies-review-in-ai-authorship-case"],
+    ["Doshi, A. R., & Hauser, O. P. (2024). Generative AI enhances individual creativity but reduces the collective diversity of novel content. Science Advances, 10(28), eadn5290.", "https://doi.org/10.1126/sciadv.adn5290"],
+    ["Editorial Team. (2025, January 16). AI's hidden impact on homeowner costs. Artificial Intelligence +.", "https://www.aiplusinfo.com/ais-hidden-impact-on-homeowner-costs/"],
+    ["Getty Images (US) Inc v. Stability AI Ltd, [2025] EWHC 2863 (Ch) (High Court of Justice, Chancery Division, Nov. 4, 2025).", ""],
+    ["International Confederation of Societies of Authors and Composers, & PMP Strategy. (2024). Study on the economic impact of generative AI in the music and audiovisual industries.", "https://www.cisac.org/cisacpmp-strategy-ai-study"],
+    ["LandGate. (2025, June 9). The best locations for solar energy and data center development in 2025.", "https://www.landgate.com/news/the-best-locations-for-solar-energy-and-data-center-development-in-2025"],
+    ["Tencer, D. (2024, December 4). Market for Gen AI outputs to be worth over $16bn annually by 2028, but it could 'cannibalize' 24% of music creators' revenues, CISAC predicts. Music Business Worldwide.", "https://www.musicbusinessworldwide.com/market-for-gen-ai-outputs-to-be-worth-over-16bn-annually-by-2028-but-it-could-cannibalize-24-of-music-creators-revenues-cisac-predicts/"],
+    ["Thaler v. Perlmutter, 130 F.4th 1039 (D.C. Cir. 2025).", ""],
+    ["United Nations Conference on Trade and Development. (2024, July 11). Creative economy outlook 2024 (UNCTAD/DITC/TSCE/2024/2).", "https://unctad.org/publication/creative-economy-outlook-2024"],
+    ["United Nations Department of Economic and Social Affairs. (n.d.). Goal 8: Promote sustained, inclusive and sustainable economic growth, full and productive employment and decent work for all.", "https://sdgs.un.org/goals/goal8"],
+    ["Wendel, J. (2026, July 21). Deezer: AI music has surpassed 50% of new music uploads for the first time. Deezer Newsroom.", "https://newsroom-deezer.com/2026/07/ai-music-exceeds-50-percent-daily-uploads-deezer/"],
+    ["World Intellectual Property Organization. (2026). 2026 WIPO IP Judges Forum informal case summary – Munich I Regional Court, Germany: GEMA v OpenAI, Case No. 42 O 14139/24. WIPO Lex.", "https://www.wipo.int/wipolex/en/text/600712"]
+  ];
+  const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+  $("#refs").innerHTML = REFS.map(([t, u]) => `<li>${esc(t)}${u ? `<br><a href="${u}" target="_blank" rel="noopener">${esc(u.replace(/^https:\/\//, ""))}</a>` : ""}</li>`).join("");
+  let lastFocus = null;
+  function openSrc() { lastFocus = document.activeElement; $("#drawer").classList.add("open"); $("#drawer").setAttribute("aria-hidden", "false"); $("#scrim").hidden = false; $("#srcClose").focus(); }
+  function closeSrc() { $("#drawer").classList.remove("open"); $("#drawer").setAttribute("aria-hidden", "true"); $("#scrim").hidden = true; if (lastFocus) lastFocus.focus(); }
+  $("#srcBtn").addEventListener("click", openSrc); $("#srcClose").addEventListener("click", closeSrc); $("#scrim").addEventListener("click", closeSrc);
+
+  /* boot */
+  const k = CH.findIndex(x => x.id === location.hash.slice(1));
+  c = k >= 0 ? k : 0; b = 0; render();
+})();
+</script>
+
+</body>
+</html>
